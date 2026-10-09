@@ -1,118 +1,203 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Business Inquiries API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API REST desarrollada con NestJS para la gestión de solicitudes comerciales internas.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Permite registrar, consultar y actualizar solicitudes aplicando control de acceso por usuario, roles y API Key.
 
-## Description
+## Technologies
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- Node.js
+- NestJS
+- TypeScript
+- TypeORM
+- PostgreSQL
+- Swagger / OpenAPI
+- class-validator
 
-## Project setup
+## Installation
+
+Install dependencies:
 
 ```bash
-$ npm install
+npm install
 ```
 
-## Compile and run the project
+Create the environment file from `.env.example`:
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+cp .env.example .env
 ```
 
-## Run tests
+Example environment configuration:
+
+```env
+PORT=3001
+
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_USER=admin
+POSTGRES_PASSWORD=change_me
+POSTGRES_DB=riwi_business_inquiries
+
+API_KEYS=key-one,key-two
+```
+
+Make sure PostgreSQL is running and the configured database exists.
+
+## Run the application
+
+Development mode:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm run start:dev
 ```
 
-## Deployment
+The API will be available at:
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+```text
+http://localhost:3001
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## Swagger
 
-## Observability
+Interactive API documentation:
 
-In production applications, observability is essential for understanding how your system behaves, detecting issues early, and maintaining reliable performance.
+```text
+http://localhost:3001/api/docs
+```
 
-[NestJS Observe](https://observe.nestjs.com) automatically instruments your NestJS application, giving you deep visibility into your system with minimal setup:
+Swagger allows testing the API directly.
 
-- **Distributed tracing:** Follow requests across services and understand how they flow through your system.
-- **Waterfall analysis:** Visualize request execution and identify slow operations, bottlenecks, and unexpected delays.
-- **Performance analysis:** Analyze application performance in real time and quickly pinpoint areas that need optimization.
-- **Metrics:** Track key application and infrastructure metrics to understand system health and performance trends.
-- **Logging:** Centralize and correlate logs with traces and other telemetry to make debugging easier.
-- **Error tracking:** Detect errors quickly and investigate their root causes with the surrounding context.
-- **SLA monitoring:** Track service-level objectives and identify when your application is approaching or exceeding defined thresholds.
-- **Alarms and alerts:** Set up alerts for critical errors, performance degradation, SLA violations, and other anomalies so your team can react quickly.
+Use **Authorize** to configure the API Key.
 
-This project is already instrumented. Create a free account at [observe.nestjs.com](https://observe.nestjs.com), add an application, and paste the generated app key and secret into the `ObserveModule.forRoot()` call in `src/app.module.ts`.
+Example:
 
-The free plan needs no payment details and covers 300,000 events a month. You can also browse the [live demo](https://www.observe-demo.nestjs.com/dashboard) first - the whole dashboard over a busy service's data, with nothing to install.
+```text
+key-one
+```
 
-## Resources
+Each functional endpoint also requires the `x-user` header.
 
-Check out a few resources that may come in handy when working with NestJS:
+## Available users
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Auto-instrument your application with [NestJS Observe](https://observe.nestjs.com). Distributed tracing, metrics, and logging made easy. Error tracking and performance monitoring for your NestJS applications.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+| User | Role |
+|---|---|
+| `admin1` | admin |
+| `supervisor1` | supervisor |
+| `asesor1` | asesor |
+| `asesor2` | asesor |
 
-## Support
+Users are stored in memory and are identified using the `x-user` header.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Required headers
 
-## Stay in touch
+```text
+x-api-key: key-one
+x-user: asesor1
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Multiple API Keys can be configured using the `API_KEYS` environment variable separated by commas.
 
-## License
+## Endpoints
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### Create inquiry
+
+```http
+POST /inquiries
+```
+
+All valid roles can create inquiries.
+
+An inquiry is always created with:
+
+```text
+PENDIENTE
+```
+
+If the user creating the inquiry has the `asesor` role, the inquiry is automatically assigned to that same user.
+
+### List inquiries
+
+```http
+GET /inquiries
+```
+
+- `admin`: can view all inquiries.
+- `supervisor`: can view all inquiries.
+- `asesor`: can only view inquiries assigned to themselves.
+
+The adviser restriction is applied directly in the database query.
+
+### Get inquiry by ID
+
+```http
+GET /inquiries/:id
+```
+
+Admin and supervisor users can access any inquiry.
+
+Advisers can only access inquiries assigned to themselves.
+
+### Update inquiry status
+
+```http
+PATCH /inquiries/:id/estado
+```
+
+Valid transitions are:
+
+```text
+PENDIENTE → EN_GESTION → RESUELTA
+```
+
+Invalid transitions such as:
+
+```text
+PENDIENTE → RESUELTA
+RESUELTA → PENDIENTE
+```
+
+are rejected.
+
+## Response format
+
+Successful responses follow this structure:
+
+```json
+{
+  "success": true,
+  "data": {}
+}
+```
+
+Errors follow this structure:
+
+```json
+{
+  "success": false,
+  "statusCode": 400,
+  "message": "Error message",
+  "timestamp": "2026-10-09T00:00:00.000Z"
+}
+```
+
+## Security
+
+Functional endpoints are protected using:
+
+```text
+x-api-key
+x-user
+```
+
+The application uses Guards to validate the API Key, identify the user and verify authorized roles.
+
+## Validation
+
+DTOs are validated using `class-validator` and NestJS `ValidationPipe`.
+
+Invalid request data returns the corresponding HTTP error response.
+
+## Author
+
+Valery Avila Ortega
