@@ -1,11 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule, ObserveInstrument } from './app.module.js';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     instrument: ObserveInstrument,
   });
+  app.useGlobalPipes(
+  new ValidationPipe({
+    whitelist: true,
+    transform: true,
+  }),
+);
 
   const config = new DocumentBuilder()
     .setTitle('Business')
@@ -15,7 +22,8 @@ async function bootstrap() {
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, documentFactory);
-  const port = process.env.PORT ?? 3001
+  const port = process.env.PORT ?? 3002
+  
   await app.listen(port);
   console.log(`API is running in http://localhost:${port}`);
   console.log(`Swagger is running in http://localhost:${port}/api/docs`);
