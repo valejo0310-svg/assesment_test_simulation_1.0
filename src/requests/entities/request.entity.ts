@@ -4,6 +4,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  Index
 } from 'typeorm';
 
 
@@ -14,6 +15,9 @@ export enum RequestStatus {
 }
 
 @Entity('requests')
+@Index('IDX_requests_estado', ['estado'])
+@Index('IDX_requests_asesor', ['asesor'])
+@Index('IDX_requests_creadaEn', ['creadaEn'])
 export class Request {
   @PrimaryGeneratedColumn()
   id: number;
