@@ -1,6 +1,5 @@
 import {
   IsNotEmpty,
-  IsOptional,
   IsString,
 } from 'class-validator';
 
@@ -22,14 +21,4 @@ export class CreateRequestDto {
   @IsString()
   @IsNotEmpty()
   descripcion: string;
-
-  @ApiProperty({
-    example: 'asesor1',
-    description: 'Assigned adviser',
-    required: false,
-  })
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  asesor?: string;
 }

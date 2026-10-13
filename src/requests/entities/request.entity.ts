@@ -1,4 +1,11 @@
-import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+
 
 export enum RequestStatus {
   PENDING = 'PENDIENTE',
@@ -17,8 +24,11 @@ export class Request {
   @Column()
   descripcion: string;
 
-  @Column()
-  asesor: string;
+  @Column({
+    type: 'varchar',
+    nullable: true,
+  })
+  asesor: string | null;
 
   @Column({
     type: 'enum',
@@ -32,4 +42,5 @@ export class Request {
 
   @UpdateDateColumn()
   actualizadaEn: Date;
+
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Param, ParseIntPipe, Patch} from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, ParseIntPipe, Patch, Query} from '@nestjs/common';
 
 import { RequestsService } from './requests.service.js';
 import { CreateRequestDto } from './dto/create-request.dto.js';
@@ -16,6 +16,11 @@ import {
   ApiSecurity,
   ApiTags,
 } from '@nestjs/swagger';
+
+
+import { AssignRequestDto } from './dto/assign-request.dto.js';
+import { QueryRequestsDto } from './dto/query-requests.dto.js';
+
 
 @ApiTags('Inquiries')
 @ApiSecurity('x-api-key')
@@ -46,8 +51,12 @@ create(
 @Roles('admin', 'supervisor', 'asesor')
 findAll(
   @CurrentUser() user: SystemUser,
+  @Query() queryDto: QueryRequestsDto,
 ) {
-  return this.requestsService.findAll(user);
+  return this.requestsService.findAll(
+    user,
+    queryDto,
+  );
 }
 @Get(':id')
 @Roles('admin', 'supervisor', 'asesor')
@@ -70,7 +79,30 @@ updateStatus(
     user,
   );
 }
-
+@Patch(':id/assignment')
+@Roles('admin', 'supervisor')
+assign(
+  @Param('id', ParseIntPipe) id: number,
+  @Body() assignRequestDto: AssignRequestDto,
+  @CurrentUser() user: SystemUser,
+) {
+  return this.requestsService.assign(
+    id,
+    assignRequestDto,
+    user,
+  );
+}
+@Get(':id/history')
+@Roles('admin', 'supervisor', 'asesor')
+findHistory(
+  @Param('id', ParseIntPipe) id: number,
+  @CurrentUser() user: SystemUser,
+) {
+  return this.requestsService.findHistory(
+    id,
+    user,
+  );
+}
 
 }
 
